@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "3e397f5d-9a40-4710-8901-66e41db1bd8c",
+		"name": "SSM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1337005"
+	},
+	"item": [
+		{
+			"name": "Get Bearer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"res = pm.response.json().access_token",
+							"//console.log(res)",
+							"pm.globals.set(\"cisco.api.ssm.bearer\", res);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cloudsso.cisco.com/as/token.oauth2",
+					"protocol": "https",
+					"host": [
+						"cloudsso",
+						"cisco",
+						"com"
+					],
+					"path": [
+						"as",
+						"token.oauth2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Smart Accounts Search",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cisco.api.ssm.bearer}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://swapi.cisco.com/services/api/smart-accounts-and-licensing/v1/accounts/search?name={{ssm_smartaccount_name}}",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"cisco",
+						"com"
+					],
+					"path": [
+						"services",
+						"api",
+						"smart-accounts-and-licensing",
+						"v1",
+						"accounts",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{ssm_smartaccount_name}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tokens List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cisco.api.ssm.bearer}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://swapi.cisco.com/services/api/smart-accounts-and-licensing/v1/accounts/{{ssm_smartaccount_domain_name}}/virtual-accounts/{{ssm_va_name_001}}/tokens",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"cisco",
+						"com"
+					],
+					"path": [
+						"services",
+						"api",
+						"smart-accounts-and-licensing",
+						"v1",
+						"accounts",
+						"{{ssm_smartaccount_domain_name}}",
+						"virtual-accounts",
+						"{{ssm_va_name_001}}",
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Smart License Subsciption",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cisco.api.ssm.bearer}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"virtualAccounts\": [\"FCM-Demo\"]\n}"
+				},
+				"url": {
+					"raw": "https://swapi.cisco.com/services/api/smart-accounts-and-licensing/v1/accounts/{{ssm_smartaccount_domain_name}}/license-subscriptions",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"cisco",
+						"com"
+					],
+					"path": [
+						"services",
+						"api",
+						"smart-accounts-and-licensing",
+						"v1",
+						"accounts",
+						"{{ssm_smartaccount_domain_name}}",
+						"license-subscriptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Smart License Usage",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cisco.api.ssm.bearer}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"virtualAccounts\": [\"{{ssm_va_name_001}}\"]\n}"
+				},
+				"url": {
+					"raw": "https://swapi.cisco.com/services/api/smart-accounts-and-licensing/v1/accounts/{{ssm_smartaccount_domain_name}}/licenses",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"cisco",
+						"com"
+					],
+					"path": [
+						"services",
+						"api",
+						"smart-accounts-and-licensing",
+						"v1",
+						"accounts",
+						"{{ssm_smartaccount_domain_name}}",
+						"licenses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cisco.api.ssm.bearer}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"virtualAccounts\": [],\n    \"severity\": [\"Major\"]\n}"
+				},
+				"url": {
+					"raw": "https://swapi.cisco.com/services/api/smart-accounts-and-licensing/v1/accounts/{{ssm_smartaccount_domain_name}}/alerts",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"cisco",
+						"com"
+					],
+					"path": [
+						"services",
+						"api",
+						"smart-accounts-and-licensing",
+						"v1",
+						"accounts",
+						"{{ssm_smartaccount_domain_name}}",
+						"alerts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
